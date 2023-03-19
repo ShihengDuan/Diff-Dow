@@ -32,17 +32,17 @@ class PrismDataset(Dataset):
             lowres_files.append(glob.glob(files)[0])
             files = path+'*'+f+'_interp.nc'
             interp_files.append(glob.glob(files)[0])
-        high_data = xa.open_mfdatasets(highres_files)
+        high_data = xa.open_mfdataset(highres_files)
         self.high_data = high_data.compute()
-        low_data = xa.open_mfdatasets(lowres_files)
+        low_data = xa.open_mfdataset(lowres_files)
         self.low_data = low_data.compute()
-        interp_data = xa.open_mfdatasets(interp_files)
+        interp_data = xa.open_mfdataset(interp_files)
         self.interp_data = interp_data.compute()
         # transform to Tensor. 
         self.interp_data = self.low_data.interp_like(self.high_data)
-        self.high_data = torch.from_numpy(self.high_data.data).float()
-        self.low_data = torch.from_numpy(self.low_data.data).float()
-        self.interp_data = torch.from_numpy(self.interp_data.data).float()
+        self.high_data = torch.from_numpy(self.high_data['__xarray_dataarray_variable__'].data).float()
+        self.low_data = torch.from_numpy(self.low_data['__xarray_dataarray_variable__'].data).float()
+        self.interp_data = torch.from_numpy(self.interp_data['__xarray_dataarray_variable__'].data).float()
 
     def __getitem__(self, index):
         high_sample = self.high_data[index]

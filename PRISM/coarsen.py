@@ -1,6 +1,8 @@
 import xarray as xa
 
-file = '/p/gpfs1/shiduan/PRISM/tmean_200405.nc'
+# file = '/p/gpfs1/shiduan/PRISM/tmean_200405.nc'
+## Quartz path
+file = '/p/lustre2/shiduan/PRISM/tmean_200405.nc'
 data = xa.open_dataarray(file)
 
 data_slice = data.isel(x=slice(40, 40+128), y=slice(70, 70+128))
